@@ -58,11 +58,114 @@ class GameTest {
 		{
 			board.addToken(0);
 		}
-		board.showGridState();
 		assertArrayEquals(board.getGrid(), grid);
 		char currentPlayer = board.getCurrentPlayer();
 		assertEquals(currentPlayer, 'Y');
 		
+	}
+	
+	@Test
+	void testInvalidTokentoBoard() {
+		char[][] grid = {
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'R', '.', '.', '.', '.', '.', '.'},
+				{'Y', '.', '.', '.', '.', '.', '.'},
+				{'R', '.', '.', '.', '.', '.', '.'},
+			};
+		assertFalse(board.addToken(7));
+		assertFalse(board.addToken(-1));
+		
+	}
+	
+	@Test 
+	void testWinnerSimpleColumn()
+	{
+		char[][] grid = {
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'R', '.', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'R');
+	}
+	
+	@Test 
+	void testWinnerComplexColumn()
+	{
+		char[][] grid = {
+				{'Y', '.', '.', 'Y', '.', '.', '.'},
+				{'Y', 'Y', 'R', 'Y', '.', '.', '.'},
+				{'Y', 'R', 'R', 'Y', '.', '.', '.'},
+				{'R', 'Y', 'R', 'R', '.', '.', '.'},
+				{'R', 'Y', 'R', 'R', '.', '.', '.'},
+				{'R', 'Y', 'Y', 'R', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'R');
+	}
+	
+	@Test 
+	void testWinnerSimpleRow()
+	{
+		char[][] grid = {
+				{'Y', 'Y', '.', 'Y', '.', '.', '.'},
+				{'Y', 'R', 'Y', 'Y', '.', '.', '.'},
+				{'R', 'R', 'R', 'R', '.', '.', '.'},
+				{'Y', 'Y', 'R', 'Y', '.', '.', '.'},
+				{'R', 'Y', 'R', 'R', '.', '.', '.'},
+				{'R', 'Y', 'Y', 'R', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'R');
+	}
+	
+	@Test
+	void testWinnerComplexRow()
+	{
+		char[][] grid = {
+				{'Y', 'Y', 'Y', 'Y', '.', '.', '.'},
+				{'Y', 'R', 'Y', 'Y', '.', '.', '.'},
+				{'Y', 'R', 'Y', 'R', '.', '.', '.'},
+				{'R', 'Y', 'R', 'Y', 'R', '.', '.'},
+				{'R', 'Y', 'R', 'R', 'Y', 'R', 'R'},
+				{'R', 'Y', 'Y', 'R', 'Y', 'R', 'R'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'Y');
+	}
+	@Test
+	void testWinnerLeftToRightDiagonal()
+	{
+		char[][] grid = {
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'Y', '.', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+				{'Y', 'R', 'Y', '.', '.', '.', '.'},
+				{'R', 'R', 'R', 'Y', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'Y');
+	}
+	
+	@Test
+	void testWinnerRightToLeftDiagonal()
+	{
+		char[][] grid = {
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', 'Y', '.', '.', '.'},
+				{'R', '.', 'Y', 'R', '.', '.', '.'},
+				{'R', 'Y', 'R', 'Y', '.', '.', '.'},
+				{'Y', 'R', 'Y', 'R', '.', '.', '.'},
+				{'R', 'R', 'R', 'Y', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid);
+		assertEquals(winner, 'Y');
 	}
 
 }
