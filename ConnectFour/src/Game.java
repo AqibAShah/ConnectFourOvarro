@@ -6,7 +6,8 @@
  * @author ashah
  *
  */
-import java.util.logging.*;
+import java.util.logging.Logger;
+import java.util.Scanner;
 
 public class Game {
     private char[][] grid;
@@ -27,24 +28,24 @@ public class Game {
      * @throws IllegalArgumentException if width or height is less than 4.
      */
     public Game(int width, int height, int winningRowLength) {
-    	this.width = width;
-        this.height = height;
         if (winningRowLength <= 1)
         {
         	logger.severe("winning row length must be greater than 1");
         	logger.info("Setting winning row length to 4");
-        	this.winningRowLength = 4;
+        	winningRowLength = 4;
         	
         }
         if (width < winningRowLength || height < winningRowLength) {
         	logger.severe("Grid size must be bigger than the winning row length");
         	logger.info("Setting 7x6 grid");
-        	this.width = 7;
-        	this.height = 6;
+        	width = 7;
+        	height = 6;
         }
+        this.width = width;
+        this.height = height;
         this.gridSize = new int[2];
-        this.gridSize[0] = this.width;
-        this.gridSize[1] = this.height;
+        this.gridSize[0] = width;
+        this.gridSize[1] = height;
         this.winningRowLength = winningRowLength;
         initializeGrid();
         currentPlayer = 'R'; // Red player starts
@@ -220,11 +221,27 @@ public class Game {
 
     
     public static void main(String[] args) {
-        // Example usage of the Game class
-        Game game = new Game(7, 6, 4); // Create a new game with a 7x6 grid and winning row length of 4
-        game.showGridState(); // Show the initial grid state
-        game.addToken(0); // Example of adding a token to column 0
-        game.showGridState(); // Show the grid state after adding a token
+    	// variable to check if parameters have been set correctly
+    	boolean set = false;
+    	while(!set)
+    	{
+    		try
+        	{
+        		Scanner scan = new Scanner(System.in);
+            	System.out.println("Please enter number of columns");
+            	int cols = scan.nextInt();
+            	System.out.println("Please enter number of rows");
+            	int rows = scan.nextInt();
+            	System.out.println("Please enter length of a winning row");
+            	int length = scan.nextInt();
+            	Game game = new Game(cols, rows, length);
+        	}
+        	catch(Exception e) 
+        	{
+        		System.out.println("Invalid combination, please try again");
+        	}
+    	}
+
     }
 
 }
