@@ -6,50 +6,68 @@
  * @author ashah
  *
  */
+import java.util.logging.*;
+
 public class Game {
     private char[][] grid;
-    private int gridSize;
+    private int width;
+    private int height;
+    private int[] gridSize;
     private int winningRowLength;
     private char currentPlayer;
+    private static final Logger logger = Logger.getLogger(Game.class.getName());
+
 
     /**
-     * Constructor to initialise a new game.
+     * Constructor to initialise a new game with custom grid size and winning row length.
      * 
-     * @param gridSize        The size of the grid.
+     * @param width             The width of the grid.
+     * @param height            The height of the grid.
      * @param winningRowLength The length of the winning row.
+     * @throws IllegalArgumentException if width or height is less than 4.
      */
-    public Game(int gridSize, int winningRowLength) {
-        this.gridSize = gridSize;
+    public Game(int width, int height, int winningRowLength) {
+    	this.width = width;
+        this.height = height;
+        if (width < winningRowLength || height < winningRowLength) {
+        	logger.severe("Grid size must be bigger than the winning row length");
+        	logger.info("Setting 7x6 grid");
+        	this.width = 7;
+        	this.height = 6;
+        }
+        this.gridSize = new int[2];
+        this.gridSize[0] = this.width;
+        this.gridSize[1] = this.height;
         this.winningRowLength = winningRowLength;
         initializeGrid();
         currentPlayer = 'R'; // Red player starts
     }
 
-    // Method to initialize a new game grid
+    // Method to initialise a new game grid
     private void initializeGrid() {
-        this.grid = new char[this.gridSize][this.gridSize];
+        this.grid = new char[this.height][this.width];
         // Initialize grid with empty cells
-        for (int i = 0; i < this.gridSize; i++) {
-            for (int j = 0; j < this.gridSize; j++) {
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
                 this.grid[i][j] = '.';
             }
         }
-        // printGrid();
+        printGrid();
     }
     
     // Method to print the current grid
     public void printGrid()
     {
-    	for (int i = 0; i < this.gridSize; i++) {
+    	for (int i = 0; i < this.height; i++) {
     		System.out.println();
-            for (int j = 0; j < this.gridSize; j++) {
+            for (int j = 0; j < this.width; j++) {
                 System.out.print(this.grid[i][j]);
             }
         }
     }
     
     // Method to get gridSize
-    public int getGridSize()
+    public int[] getGridSize()
     {
     	return this.gridSize;
     }
