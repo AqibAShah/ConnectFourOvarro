@@ -61,7 +61,8 @@ public class Game {
         	winningRowLength = 4;
         	
         }
-        if (width < winningRowLength || height < winningRowLength) {
+        if (width < winningRowLength || height < winningRowLength) 
+        {
         	logger.warning("Grid size must be bigger than the winning row length" + System.lineSeparator());
         	// standard connect four grid
         	logger.info("Setting 7x6 grid" + System.lineSeparator());
@@ -71,9 +72,7 @@ public class Game {
         }
         this.width = width;
         this.height = height;
-        this.gridSize = new int[2];
-        this.gridSize[0] = width;
-        this.gridSize[1] = height;
+        this.gridSize = new int[]{width, height};
         this.winningRowLength = winningRowLength;
         initializeGrid();
         currentPlayer = 'R';
