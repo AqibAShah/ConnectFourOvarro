@@ -25,7 +25,6 @@ public class Game {
      * @param width             The width of the grid.
      * @param height            The height of the grid.
      * @param winningRowLength The length of the winning row.
-     * @throws IllegalArgumentException if width or height is less than 4.
      */
     public Game(int width, int height, int winningRowLength) {
         if (winningRowLength <= 1)
@@ -37,6 +36,7 @@ public class Game {
         }
         if (width < winningRowLength || height < winningRowLength) {
         	logger.severe("Grid size must be bigger than the winning row length");
+        	// standard connect four grid
         	logger.info("Setting 7x6 grid");
         	width = 7;
         	height = 6;
@@ -51,7 +51,10 @@ public class Game {
         currentPlayer = 'R'; // Red player starts
     }
 
-    // Method to initialise a new game grid
+    /**
+     * Method to initialise the grid that will be used for the game.
+     * 
+     */
     private void initializeGrid() {
         this.grid = new char[this.height][this.width];
         // Initialise grid with empty cells
@@ -64,19 +67,31 @@ public class Game {
     }
     
     
-    // Method to get gridSize
+    /**
+     * Method to get the size of the grid
+     * 
+     * @return gridSize         The grid size is an array containing the width and height
+     */
     public int[] getGridSize()
     {
     	return this.gridSize;
     }
     
-	// Method to get gridSize
+    /**
+     * Method to get the grid
+     * 
+     * @return grid         The grid is a 2d array on which the game is being played
+    */
 	public char[][] getGrid()
 	{
 		return this.grid;
 	}
     
-	// Method to get winningRowLength
+	/**
+     * Method to get the length of a winning combination
+     * 
+     * @return winningRowLength         The length of a winning combination
+    */
     public int getWinningRowLength()
     {
     	return this.winningRowLength;
@@ -109,7 +124,7 @@ public class Game {
 
     /**
      * Method to show the game grid state/progress.
-     */
+    */
     public void showGridState() {
     	for (int i = 0; i < this.width; i++)
     	{
@@ -144,16 +159,18 @@ public class Game {
      * Method to get current player.
      * 
      * @return The current player (either 'R' or 'Y').
-     */
+    */
     public char getCurrentPlayer() {
     	return this.currentPlayer;
     }
 
-    /**
-     * Method to check if there is a winner.
-     * 
-     * @return The winner player ('R' or 'Y') if there is a winner, '.' if no winner yet.
-     */
+	/**
+	 * Method to check if there is a winner.
+	 * 
+	 * @param board The board that is being checked
+	 * @winningRowLength The winning row length associated with the board
+	 * @return The winner player ('R' or 'Y') if there is a winner, '.' if no winner yet.
+	*/
     public char checkWinner(char[][] board, int winningRowLength) {
         // Check rows
         for (int row = 0; row < board.length; row++) {
@@ -218,8 +235,18 @@ public class Game {
         // If no winner is found, return '.'
         return '.';
     }
-
     
+    /**
+     * Method containing the logic to play the game
+     *
+     * @param game An instance of the game that is being played
+    */
+    public static void playGame(Game game)
+    {
+    	game.showGridState();
+    }
+
+    // Main method
     public static void main(String[] args) {
     	// variable to check if parameters have been set correctly
     	boolean set = false;
@@ -234,7 +261,9 @@ public class Game {
             	int rows = scan.nextInt();
             	System.out.println("Please enter length of a winning row");
             	int length = scan.nextInt();
+            	set = true;
             	Game game = new Game(cols, rows, length);
+            	playGame(game);
         	}
         	catch(Exception e) 
         	{
