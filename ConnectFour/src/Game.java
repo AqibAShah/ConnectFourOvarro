@@ -29,6 +29,13 @@ public class Game {
     public Game(int width, int height, int winningRowLength) {
     	this.width = width;
         this.height = height;
+        if (winningRowLength <= 1)
+        {
+        	logger.severe("winning row length must be greater than 1");
+        	logger.info("Setting winning row length to 4");
+        	this.winningRowLength = 4;
+        	
+        }
         if (width < winningRowLength || height < winningRowLength) {
         	logger.severe("Grid size must be bigger than the winning row length");
         	logger.info("Setting 7x6 grid");
@@ -95,7 +102,8 @@ public class Game {
             	return true;
             }
         }
-        return false; // Placeholder return value
+    	logger.info("Cannot find space to insert token");
+        return false;
     }
 
     /**
@@ -145,49 +153,78 @@ public class Game {
      * 
      * @return The winner player ('R' or 'Y') if there is a winner, '.' if no winner yet.
      */
-    public char checkWinner(char[][] board) {
+    public char checkWinner(char[][] board, int winningRowLength) {
         // Check rows
         for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col <= board[row].length - 4; col++) {
+            for (int col = 0; col <= board[row].length - winningRowLength; col++) {
                 char token = board[row][col];
-                if (token != '.' && token == board[row][col + 1] && token == board[row][col + 2] && token == board[row][col + 3]) {
-                    return token;
+                boolean rowWin = true;
+                for (int k = 1; k < winningRowLength; k++) {
+                    if (board[row][col + k] != token || token == '.') {
+                        rowWin = false;
+                        break;
+                    }
                 }
+                if (rowWin) return token;
             }
         }
 
         // Check columns
         for (int col = 0; col < board[0].length; col++) {
-            for (int row = 0; row <= board.length - 4; row++) {
+            for (int row = 0; row <= board.length - winningRowLength; row++) {
                 char token = board[row][col];
-                if (token != '.' && token == board[row + 1][col] && token == board[row + 2][col] && token == board[row + 3][col]) {
-                    return token;
+                boolean colWin = true;
+                for (int k = 1; k < winningRowLength; k++) {
+                    if (board[row + k][col] != token || token == '.') {
+                        colWin = false;
+                        break;
+                    }
                 }
+                if (colWin) return token;
             }
         }
 
         // Check diagonals (top-left to bottom-right)
-        for (int row = 0; row <= board.length - 4; row++) {
-            for (int col = 0; col <= board[row].length - 4; col++) {
+        for (int row = 0; row <= board.length - winningRowLength; row++) {
+            for (int col = 0; col <= board[row].length - winningRowLength; col++) {
                 char token = board[row][col];
-                if (token != '.' && token == board[row + 1][col + 1] && token == board[row + 2][col + 2] && token == board[row + 3][col + 3]) {
-                    return token;
+                boolean diagonalWin = true;
+                for (int k = 1; k < winningRowLength; k++) {
+                    if (board[row + k][col + k] != token || token == '.') {
+                        diagonalWin = false;
+                        break;
+                    }
                 }
+                if (diagonalWin) return token;
             }
         }
 
         // Check diagonals (top-right to bottom-left)
-        for (int row = 0; row <= board.length - 4; row++) {
-            for (int col = board[row].length - 1; col >= 3; col--) {
+        for (int row = 0; row <= board.length - winningRowLength; row++) {
+            for (int col = board[row].length - 1; col >= winningRowLength - 1; col--) {
                 char token = board[row][col];
-                if (token != '.' && token == board[row + 1][col - 1] && token == board[row + 2][col - 2] && token == board[row + 3][col - 3]) {
-                    return token;
+                boolean diagonalWin = true;
+                for (int k = 1; k < winningRowLength; k++) {
+                    if (board[row + k][col - k] != token || token == '.') {
+                        diagonalWin = false;
+                        break;
+                    }
                 }
+                if (diagonalWin) return token;
             }
         }
 
         // If no winner is found, return '.'
         return '.';
+    }
+
+    
+    public static void main(String[] args) {
+        // Example usage of the Game class
+        Game game = new Game(7, 6, 4); // Create a new game with a 7x6 grid and winning row length of 4
+        game.showGridState(); // Show the initial grid state
+        game.addToken(0); // Example of adding a token to column 0
+        game.showGridState(); // Show the grid state after adding a token
     }
 
 }

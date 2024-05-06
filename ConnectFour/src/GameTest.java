@@ -66,14 +66,6 @@ class GameTest {
 	
 	@Test
 	void testInvalidTokentoBoard() {
-		char[][] grid = {
-				{'.', '.', '.', '.', '.', '.', '.'},
-				{'.', '.', '.', '.', '.', '.', '.'},
-				{'.', '.', '.', '.', '.', '.', '.'},
-				{'R', '.', '.', '.', '.', '.', '.'},
-				{'Y', '.', '.', '.', '.', '.', '.'},
-				{'R', '.', '.', '.', '.', '.', '.'},
-			};
 		assertFalse(board.addToken(7));
 		assertFalse(board.addToken(-1));
 		
@@ -90,7 +82,7 @@ class GameTest {
 				{'R', 'Y', '.', '.', '.', '.', '.'},
 				{'R', 'Y', '.', '.', '.', '.', '.'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'R');
 	}
 	
@@ -105,7 +97,7 @@ class GameTest {
 				{'R', 'Y', 'R', 'R', '.', '.', '.'},
 				{'R', 'Y', 'Y', 'R', '.', '.', '.'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'R');
 	}
 	
@@ -120,7 +112,7 @@ class GameTest {
 				{'R', 'Y', 'R', 'R', '.', '.', '.'},
 				{'R', 'Y', 'Y', 'R', '.', '.', '.'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'R');
 	}
 	
@@ -135,7 +127,7 @@ class GameTest {
 				{'R', 'Y', 'R', 'R', 'Y', 'R', 'R'},
 				{'R', 'Y', 'Y', 'R', 'Y', 'R', 'R'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'Y');
 	}
 	@Test
@@ -149,7 +141,7 @@ class GameTest {
 				{'Y', 'R', 'Y', '.', '.', '.', '.'},
 				{'R', 'R', 'R', 'Y', '.', '.', '.'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'Y');
 	}
 	
@@ -164,8 +156,38 @@ class GameTest {
 				{'Y', 'R', 'Y', 'R', '.', '.', '.'},
 				{'R', 'Y', 'R', 'Y', 'Y', '.', '.'},
 			};
-		char winner = board.checkWinner(grid);
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
 		assertEquals(winner, 'R');
+	}
+	
+	@Test	
+	void testThreeInARow()
+	{
+		board = new Game(7, 6, 3);
+		char[][] grid = {
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'.', '.', '.', '.', '.', '.', '.'},
+				{'R', '.', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+				{'R', 'Y', '.', '.', '.', '.', '.'},
+			};
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
+		assertEquals(winner, 'R');
+	}
+	@Test
+	void testTwoInARow()
+	{
+		board = new Game(4, 4, 2);
+		char[][] grid = {
+				{'.', '.', '.', '.'},
+				{'.', '.', '.', '.'},
+				{'Y', '.', '.', '.'},
+				{'R', '.', '.', '.'},
+				{'Y', 'Y', '.', '.'},
+			};
+		char winner = board.checkWinner(grid, board.getWinningRowLength());
+		assertEquals(winner, 'Y');
 	}
 
 }
