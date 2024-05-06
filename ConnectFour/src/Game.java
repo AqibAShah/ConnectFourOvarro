@@ -47,7 +47,7 @@ public class Game {
     private void initializeGrid() {
     	logger.info("Initialising grid");
         this.grid = new char[this.height][this.width];
-        // Initialize grid with empty cells
+        // Initialise grid with empty cells
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
                 this.grid[i][j] = '.';
@@ -88,7 +88,6 @@ public class Game {
     		logger.warning("Column is not on grid");
     	}
     	for (int i = this.height - 1; i >= 0; i--) {
-            System.out.println(this.grid[i][column]);
             if (this.grid[i][column] == '.')
             {
             	logger.info("Inserting token");
@@ -116,6 +115,8 @@ public class Game {
                 System.out.print(" ");
             }
         }
+    	System.out.println();
+    	System.out.println("Player to move: " + this.getCurrentPlayer());
     }
 
     /**
