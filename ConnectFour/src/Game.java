@@ -45,6 +45,7 @@ public class Game {
 
     // Method to initialise a new game grid
     private void initializeGrid() {
+    	logger.info("Initialising grid");
         this.grid = new char[this.height][this.width];
         // Initialize grid with empty cells
         for (int i = 0; i < this.height; i++) {
@@ -52,19 +53,9 @@ public class Game {
                 this.grid[i][j] = '.';
             }
         }
-        printGrid();
+        //printGrid();
     }
     
-    // Method to print the current grid
-    public void printGrid()
-    {
-    	for (int i = 0; i < this.height; i++) {
-    		System.out.println();
-            for (int j = 0; j < this.width; j++) {
-                System.out.print(this.grid[i][j]);
-            }
-        }
-    }
     
     // Method to get gridSize
     public int[] getGridSize()
@@ -72,7 +63,13 @@ public class Game {
     	return this.gridSize;
     }
     
- // Method to get winningRowLength
+	// Method to get gridSize
+	public char[][] getGrid()
+	{
+		return this.grid;
+	}
+    
+	// Method to get winningRowLength
     public int getWinningRowLength()
     {
     	return this.winningRowLength;
@@ -85,7 +82,21 @@ public class Game {
      * @return true if the token was successfully added, false otherwise.
      */
     public boolean addToken(int column) {
-        // TODO: Implement logic to add a token to the specified column
+    	logger.info("Game > addToken(int column)");
+    	if (column > this.width)
+    	{
+    		logger.warning("Column is not on grid");
+    	}
+    	for (int i = this.height - 1; i >= 0; i--) {
+            System.out.println(this.grid[i][column]);
+            if (this.grid[i][column] == '.')
+            {
+            	logger.info("Inserting token");
+            	this.grid[i][column] = this.currentPlayer;
+            	this.currentPlayer = this.getNextPlayer();
+            	return true;
+            }
+        }
         return false; // Placeholder return value
     }
 
@@ -93,7 +104,18 @@ public class Game {
      * Method to show the game grid state/progress.
      */
     public void showGridState() {
-        // TODO: Implement logic to display the game grid state
+    	for (int i = 0; i < this.width; i++)
+    	{
+    		System.out.print(i);
+    		System.out.print(" ");
+    	}
+    	for (int i = 0; i < this.height; i++) {
+    		System.out.println();
+            for (int j = 0; j < this.width; j++) {
+                System.out.print(this.grid[i][j]);
+                System.out.print(" ");
+            }
+        }
     }
 
     /**
@@ -102,7 +124,20 @@ public class Game {
      * @return The next player (either 'R' or 'Y').
      */
     public char getNextPlayer() {
-        return currentPlayer;
+    	if (this.currentPlayer == 'R')
+    	{
+    		return 'Y';
+    	}
+        return 'R';
+    }
+    
+    /**
+     * Method to get current player.
+     * 
+     * @return The current player (either 'R' or 'Y').
+     */
+    public char getCurrentPlayer() {
+    	return this.currentPlayer;
     }
 
     /**
